@@ -14,7 +14,7 @@ class Cinema(models.Model):
 
 
 class Movie(models.Model):
-    name = models.TextField()
+    name = models.TextField(null=True,blank=True)
     title = models.CharField(max_length=100)
     description = models.CharField(max_length=100)
     cinema = models.ForeignKey(Cinema,on_delete=models.CASCADE)
