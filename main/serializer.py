@@ -26,7 +26,12 @@ class MovieSerializer(serializers.ModelSerializer):
     class Meta:
         model = Movie
         fields = '__all__'
+
+
+
 class Movie_valid_serializator(serializers.Serializer):
     name = serializers.CharField(min_length=3,max_length=20)
     title = serializers.CharField(min_length=3,max_length=20)
     description = serializers.CharField(min_length=3,max_length=100)
+    cinema_id = serializers.IntegerField()
+    genres = serializers.ListField(child=serializers.IntegerField())
