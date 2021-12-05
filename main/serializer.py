@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Movie,Review,Cinema,Genres
+from .models import Movie, Review, Cinema, Genres
 
 
 class CinemaSerializer(serializers.ModelSerializer):
@@ -35,3 +35,7 @@ class Movie_valid_serializator(serializers.Serializer):
     description = serializers.CharField(min_length=3,max_length=100)
     cinema_id = serializers.IntegerField()
     genres = serializers.ListField(child=serializers.IntegerField())
+# class Registration_serializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Registration
+#         fields = '__all__'

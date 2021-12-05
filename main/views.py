@@ -1,6 +1,9 @@
+from django.contrib.auth import authenticate
+from django.contrib.auth.models import User
 from django.db.migrations import serializer
 from django.shortcuts import render
 from rest_framework import status
+from rest_framework.authtoken.models import Token
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .models import *
@@ -31,6 +34,7 @@ def Movie_item_view(request, id):
 
 @api_view(['GET'])
 def Movie_list_view(request):
+    print(request.user)
     movie = Movie.objects.all()
     data = MovieSerializer(movie, many=True).data
     return Response(data=data)
@@ -85,3 +89,23 @@ def delete_or_update_movie(request, id):
     elif request.method == 'DELETE':
         movie.delete()
         return Response(data={'message': 'Movie Deleted'})
+@api_view(['POST'])
+def login(request):
+    username = request.data['username']
+    password = request.data['password']
+    user = authenticate(username=username,password=password)
+    if user :
+        try:
+            token = Token.objects.get(user=user)
+        except Token.DoesNotExist:
+            token = Token.objects.create(user=user)
+            return Response(data={'token':token.key})
+    else:
+         return Response(status=status.HTTP_404_NOT_FOUND)
+@api_view(['POST'])
+def registration(request):
+    username = request.data['username']
+    password = request.data['password']
+    User.objects.create_user(username=username,
+                             password=password)
+    return Response(data={'message':'User Created'})
